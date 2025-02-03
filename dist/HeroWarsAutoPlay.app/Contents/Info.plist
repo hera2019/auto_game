@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>HeroWarsAutoPlay</string>
+	<key>CFBundleExecutable</key>
+	<string>HeroWarsAutoPlay</string>
+	<key>CFBundleIconFile</key>
+	<string>generated-8120576a361c912aa38f2be6d35b59b9c5f939e70eba0225e626637615a3bf91.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>HeroWarsAutoPlay</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>HeroWarsAutoPlay</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.0</string>
+	<key>LSBackgroundOnly</key>
+	<true/>
+</dict>
+</plist>

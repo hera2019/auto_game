@@ -1,0 +1,3 @@
+([('HeroWarsAutoPlay',
+   '/Users/Hera/Documents/auto_game/dist/HeroWarsAutoPlay',
+   'EXECUTABLE')],)
