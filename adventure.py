@@ -22,6 +22,12 @@ class AdventureButton:
         self.pic_btn_guild = globaldef.resource_path('pic/guild.png')
         self.pic_btn_guild_sacredcastle = globaldef.resource_path('pic/guild_sacredcastle.png')
         self.pic_btn_adventure = globaldef.resource_path('pic/adventure.png')
+        self.pic_btn_adventure_sell = globaldef.resource_path('pic/adventure_sell.png')
+        self.pic_btn_adventure_sell_potion = globaldef.resource_path('pic/adventure_sell_potion.png')
+        self.pic_btn_adventure_sell_particle = globaldef.resource_path('pic/adventure_sell_particle.png')
+        self.pic_btn_adventure_petsummon = globaldef.resource_path('pic/adventure_petsummon.png')
+        self.pic_btn_adventure_petegg = globaldef.resource_path('pic/adventure_petegg.png')
+        self.pic_btn_dungeon_ok = globaldef.resource_path('pic/dungeon_ok.png')
         self.pic_btn_adventure_left = globaldef.resource_path('pic/adventure_left.png')
         self.pic_btn_adventure_level9 = globaldef.resource_path('pic/adventure_level9.png')
         self.pic_btn_adventure_creategroup = globaldef.resource_path('pic/adventure_creategroup.png')
@@ -108,32 +114,53 @@ class AdventureButton:
     def on_button_click(self):
         globaldef.set_stop_loop(False)
         self.clicker.click_button(self.pic_btn_guild)
-        self.clicker.click_button(self.pic_btn_guild_sacredcastle, duration=3, threshold=0.8)
-        self.clicker.click_button(self.pic_btn_adventure)
+        self.clicker.click_button(self.pic_btn_guild_sacredcastle, duration=4, threshold=0.8)
+        # Sell
+        if self.clicker.click_button(self.pic_btn_adventure_sell):
+            self.clicker.click_button(self.pic_btn_adventure_sell_potion, threshold=0.9, use_color=True, click_pos=8)
+            self.clicker.click_button(self.pic_btn_adventure_sell_particle, threshold=0.9, use_color=True, click_pos=8)
+            self.clicker.click_button(self.pic_btn_close, click_pos=4)
+            
+        # Pet Summon
+        if self.clicker.click_button(self.pic_btn_adventure_petsummon, threshold=0.9, use_color=True):
+            if self.clicker.click_button(self.pic_btn_adventure_petegg, threshold=0.9, use_color=True):
+                time.sleep(2)
+                while self.clicker.click_button(self.pic_btn_dungeon_ok):
+                    time.sleep(0.5)
+                self.clicker.click_button(self.pic_btn_close)
+            self.clicker.click_button(self.pic_btn_close)
+            
+        # Adventure
+        self.clicker.click_button(self.pic_btn_adventure)        
         end_time = time.time() + 10
         while time.time() < end_time:
             time.sleep(0.5)
             if globaldef.is_stopped():
-                break
-            if not self.clicker.find_button(self.pic_btn_adventure_level9):
+                return False
+            if not self.clicker.find_button(self.pic_btn_adventure_level9, use_color=True):
                 self.clicker.click_button(self.pic_btn_adventure_left, checktwice=False)
             else:
                 break
-        if self.clicker.click_button(self.pic_btn_adventure_creategroup):
-            if self.clicker.click_button(self.pic_btn_adventure_start):
-                self.clicker.click_button(self.pic_btn_close)
-        
+        if self.clicker.find_button(self.pic_btn_adventure_level9, use_color=True):
+            if self.clicker.click_button(self.pic_btn_adventure_creategroup):
+                self.clicker.click_button(self.pic_btn_adventure_start)
+            
         self.on_domap_click()
 
-        #self.clicker.click_button(self.pic_btn_close)
+        self.clicker.click_button(self.pic_btn_close)
+        self.clicker.click_button(self.pic_btn_close)
 
     def on_domap_click(self):
         globaldef.set_stop_loop(False)
-        self.clicker.click_button(self.pic_btn_adventure_bigavatar, double_click=True)
-        for _ in range(5): # 4
-            pyautogui.scroll(-200)  # 每次向下滚动100
-            
-        return self.on_doline_click(1)            
+        if self.clicker.click_button(self.pic_btn_adventure_bigavatar, double_click=True):
+            for _ in range(5): # 4
+                pyautogui.scroll(-200)  # 每次向下滚动100
+                
+            return self.on_doline_click(1)
+        else:            
+            self.clicker.click_button(self.pic_btn_close)
+            self.clicker.click_button(self.pic_btn_close)
+        return False
 
     def on_doline_click(self, line=1):
         # 寻找 mapNo=9 和 lineNo=1 的 MapLine

@@ -27,9 +27,9 @@ class GrandarenaButton:
         globaldef.set_stop_loop(False)
         if self.clicker.click_button(self.pic_btn_dungeon_battle, threshold=0.6):
             # 等待战斗结束，下一场
-            if not self.clicker.click_button(self.pic_btn_grandarena_nextbattle, duration=120):
+            if not self.clicker.click_button(self.pic_btn_grandarena_nextbattle, duration=130):
                 # 公会突袭
-                self.clicker.click_button(self.pic_btn_guildraid_nextbattle, duration=120)
+                self.clicker.click_button(self.pic_btn_guildraid_nextbattle, duration=130)
             # 继续等待战斗结束，下一场 或者 OK            
             end_time = time.time() + 250
             while time.time() < end_time:

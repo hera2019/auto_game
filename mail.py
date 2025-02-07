@@ -1,6 +1,5 @@
 # mail.py
 
-import time
 from button_clicker import ButtonClicker
 import globaldef
 

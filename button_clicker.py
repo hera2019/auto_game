@@ -30,7 +30,7 @@ class ButtonClicker:
         distance = math.hypot(pos1[0] - pos2[0], pos1[1] - pos2[1])
         return distance <= tolerance
         
-    def click_button(self, pic_path, duration=2, threshold=0.8, use_color=False, double_click=False, click_pos=0, checktwice=True):
+    def click_button(self, pic_path, duration=2, threshold=0.8, use_color=False, waittime=0.5, double_click=False, click_pos=0, checktwice=True):
         """
         每秒查找一次是否存在对应的图片，找到即刻返回。若在指定时间内未找到，返回空列表。        
         :param pic_path: 模板图像路径
@@ -41,13 +41,13 @@ class ButtonClicker:
         :param checktwice: 是否再次检查
         :return: 匹配到的坐标列表或空列表
         """        
-        button_positions = self.find_button(pic_path, duration, threshold, use_color)
+        button_positions = self.find_button(pic_path, duration, threshold, use_color, waittime=waittime)
         if button_positions:
             self.click(button_positions[0], double_click, click_pos)
             if checktwice:
                 # 再次匹配，检查是不是按到了，窗口处于未激活状态，第一下按不到，但是不再等待
                 time.sleep(0.3)
-                button_positions2 = self.find_button(pic_path, duration=1, threshold=threshold, use_color=use_color)
+                button_positions2 = self.find_button(pic_path, duration=1, threshold=threshold, use_color=use_color, waittime=waittime)
                 if button_positions2:
                     if self.positions_close(button_positions[0], button_positions2[0]):
                         logging.info(f"再次匹配到同一位置相同图像，再次点击")
@@ -56,20 +56,23 @@ class ButtonClicker:
         else:
             return False
             
-    def find_button(self, pic_path, duration=2, threshold=0.8, use_color=False):
+    def find_button(self, pic_path, duration=2, threshold=0.8, use_color=False, waittime=0.5):
+        
+        if use_color:
+            template = cv2.imread(pic_path, cv2.IMREAD_COLOR)
+            if template is None:
+                raise FileNotFoundError(f"未能加载图像: {pic_path}")
+        else:
+            template = cv2.imread(pic_path, cv2.IMREAD_GRAYSCALE)
+            if template is None:
+                raise FileNotFoundError(f"未能加载图像: {pic_path}")
+            
         end_time = time.time() + duration
-        while time.time() < end_time:
-            matched_points = []
-                
+        while (duration == 0) or (time.time() < end_time):
+            matched_points = []                
             if use_color:
-                template = cv2.imread(pic_path, cv2.IMREAD_COLOR)
-                if template is None:
-                    raise FileNotFoundError(f"未能加载图像: {pic_path}")
                 screenshot_img = self.screenshot()  # 保留彩色截图
             else:
-                template = cv2.imread(pic_path, cv2.IMREAD_GRAYSCALE)
-                if template is None:
-                    raise FileNotFoundError(f"未能加载图像: {pic_path}")
                 screenshot_img = cv2.cvtColor(self.screenshot(), cv2.COLOR_BGR2GRAY)
             result = cv2.matchTemplate(screenshot_img, template, cv2.TM_CCOEFF_NORMED)
             loc = np.where(result >= threshold)
@@ -87,11 +90,9 @@ class ButtonClicker:
                 #print(f"模板图像的宽度和高度: {self.pic_width}, {self.pic_height}")
                 
                 return matched_points  # 找到匹配点，立即返回
-            else:
-                #logging.info(f"暂时未寻找到图像: {pic_path}, use_color: {use_color}")
-                pass
-                        
-            time.sleep(0.5)  # 等待0.5秒后再次查找
+            elif duration == 0:
+                break
+            time.sleep(waittime)  # 等待后再次查找
             
         logging.info(f"图像未匹配: {pic_path}, use_color: {use_color}")
         return matched_points  # 未找到匹配点，返回空列表
@@ -136,4 +137,6 @@ class ButtonClicker:
         else:
             pyautogui.click()
             logging.info(f"Clicked button at position: {x}, {y}")
-                
+            
+        return True
+                    

@@ -73,10 +73,10 @@ class DailyquestButton:
                         
                 self.clicker.click_button(self.pic_btn_bigclose)
                 
-            if self.clicker.click_button(self.pic_btn_dailyquest_daily, threshold=0.95): # 再一次刷新的日常任务
-                while self.clicker.click_button(self.pic_btn_clear, checktwice=False):
-                    if globaldef.is_stopped():
-                        break
-                    time.sleep(1)  # 可选的延迟，防止过快循环
+            self.clicker.click_button(self.pic_btn_dailyquest_daily, threshold=0.95) # 再一次刷新的日常任务，也可能默认是此页面
+            while self.clicker.click_button(self.pic_btn_clear, checktwice=False):
+                if globaldef.is_stopped():
+                    break
+                time.sleep(1)  # 可选的延迟，防止过快循环
 
             self.clicker.click_button(self.pic_btn_close)
