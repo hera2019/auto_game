@@ -1,6 +1,7 @@
 # getrewards.py
 
 import time
+import datetime
 from button_clicker import ButtonClicker
 import globaldef
 
@@ -15,6 +16,7 @@ class GetrewardsButton:
         self.pic_btn_event_flashframe = globaldef.resource_path('pic/event_flashframe.png')
         self.pic_btn_event_redpoint = globaldef.resource_path('pic/event_redpoint.png')
         self.pic_btn_energy = globaldef.resource_path('pic/energy.png')
+        self.pic_btn_energy_use = globaldef.resource_path('pic/energy_use.png')
         self.pic_btn_energy_50get = globaldef.resource_path('pic/energy_50get.png')
         self.pic_btn_hero = globaldef.resource_path('pic/hero.png')
         self.pic_btn_hero_dante = globaldef.resource_path('pic/hero_dante.png')
@@ -22,6 +24,7 @@ class GetrewardsButton:
         self.pic_btn_hero_10getpoint = globaldef.resource_path('pic/hero_10getpoint.png')
         self.pic_btn_event_dailybonus = globaldef.resource_path('pic/event_dailybonus.png')
         self.pic_btn_event_dailybonus_receive = globaldef.resource_path('pic/event_dailybonus_receive.png')
+        self.pic_btn_event_ok = globaldef.resource_path('pic/event_ok.png')
         self.pic_btn_event_skinsell = globaldef.resource_path('pic/event_skinsell.png')
         self.pic_btn_clear = globaldef.resource_path('pic/clear.png')
         self.pic_btn_close = globaldef.resource_path('pic/close.png')
@@ -33,6 +36,8 @@ class GetrewardsButton:
 
         # 点开能量包，购买50翡翠能量
         if self.clicker.click_button(self.pic_btn_energy, use_color=True):
+            while self.clicker.click_button(self.pic_btn_energy_use, threshold=0.9, use_color=True, checktwice=False):
+                time.sleep(0.5)
             self.clicker.click_button(self.pic_btn_energy_50get, threshold=0.9, use_color=True, checktwice=False)
             time.sleep(0.5)
             self.clicker.click_button(self.pic_btn_energy_50get, threshold=0.9, use_color=True, checktwice=False)
@@ -48,11 +53,18 @@ class GetrewardsButton:
             self.clicker.click_button(self.pic_btn_bigclose)
 
         # Event活动
-        if self.clicker.click_button(self.pic_btn_event, threshold=0.96):
+        if self.clicker.click_button(self.pic_btn_event, threshold=0.9, use_color=True):
             # 领取每日奖金
             if self.clicker.click_button(self.pic_btn_event_dailybonus):
-                if self.clicker.click_button(self.pic_btn_event_dailybonus_receive):
-                    self.clicker.click_button(self.pic_btn_receive)
+                point = [620, 410]
+                today = datetime.date.today()
+                day_of_month = today.day - 1
+                quotient, remainder = divmod(day_of_month, 5)
+                point[0] += remainder * 111
+                point[1] += 132
+                if self.clicker.click_point(point[0], point[1]):
+                    if not self.clicker.click_button(self.pic_btn_receive):
+                        self.clicker.click_button(self.pic_btn_event_ok)
             # 领取每日皮肤石
             if self.clicker.click_button(self.pic_btn_event_skinsell):
                 self.clicker.click_button(self.pic_btn_receive)

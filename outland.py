@@ -21,8 +21,8 @@ class OutlandButton:
             button_positions = self.clicker.find_button(self.pic_btn_outland_spy) #先找到蜘蛛頭像位置
             
             self.clicker.click_button(self.pic_btn_rewardreceive)
-            self.clicker.click_button(self.pic_btn_outland_openbox, threshold=0.8, use_color=True) # 宝箱，褐色不用开
-            self.clicker.click_button(self.pic_btn_open, threshold=0.8, use_color=True)
+            self.clicker.click_button(self.pic_btn_outland_openbox, threshold=0.9, use_color=True) # 宝箱，褐色不用开
+            self.clicker.click_button(self.pic_btn_open, threshold=0.95, use_color=True)
             self.clicker.click_button(self.pic_btn_close)
             
             if button_positions:

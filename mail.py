@@ -17,7 +17,7 @@ class MailButton:
     
     def on_button_click(self):
         globaldef.set_stop_loop(False)
-        if self.clicker.click_button(self.pic_btn_mail, threshold=0.96):
+        if self.clicker.click_button(self.pic_btn_mail, threshold=0.9):
             if self.clicker.click_button(self.pic_btn_allreceive):
                 self.clicker.click_button(self.pic_btn_showall)
                 self.clicker.click_button(self.pic_btn_allreceive, duration=10)

@@ -1,6 +1,7 @@
 # dungeon.py
 
 import time
+import pyautogui
 from button_clicker import ButtonClicker
 import globaldef
 
@@ -41,6 +42,9 @@ class DungeonButton:
         self.pic_btn_dungeon_titan_fire3 = globaldef.resource_path('pic/dungeon_titan_fire3.png')
         self.pic_btn_dungeon_titan_fire4 = globaldef.resource_path('pic/dungeon_titan_fire4.png')
         self.pic_btn_dungeon_titan_fire2_small = globaldef.resource_path('pic/dungeon_titan_fire2_small.png')
+        self.pic_btn_dungeon_titan_light1 = globaldef.resource_path('pic/dungeon_titan_light1.png')
+        self.pic_btn_dungeon_titan_dark1 = globaldef.resource_path('pic/dungeon_titan_dark1.png')
+        self.pic_btn_dungeon_scrollbar = globaldef.resource_path('pic/dungeon_scrollbar.png')
         self.pic_btn_dungeon_titan_5 = globaldef.resource_path('pic/dungeon_titan_5.png')
         self.pic_btn_dungeon_2select_5 = globaldef.resource_path('pic/dungeon_2select_5.png')
         self.pic_btn_dungeon_menufight = globaldef.resource_path('pic/dungeon_menufight.png')
@@ -99,7 +103,7 @@ class DungeonButton:
                 if self.clicker.click_button(self.pic_btn_dungeon_attack_5, duration=0, threshold=0.9, use_color=True, click_pos=8): # 无卡牌，出现此项
                     return self.on_attack_click(5)
             # 3：优先选择水系泰坦
-            elif self.clicker.click_button(self.pic_btn_dungeon_attack_water, duration=0, threshold=0.9, use_color=True, click_pos=8):
+            elif self.clicker.click_button(self.pic_btn_dungeon_attack_water, duration=0, threshold=0.95, use_color=True, click_pos=8):
                 titan = 1
             # 4：轮流选择自然系、火系泰坦
             elif (self.clicker.find_button(self.pic_btn_dungeon_attack_fire, duration=0, threshold=0.9, use_color=True)) and (self.clicker.find_button(self.pic_btn_dungeon_attack_nature, duration=0, threshold=0.9, use_color=True)):
@@ -175,13 +179,92 @@ class DungeonButton:
             positions = self.clicker.find_button(self.pic_btn_dungeon_titan_fire4, duration=0, threshold=0.9, use_color=True)
             self.clickpos(positions)
                 
+        elif titan == 5:
+            pos1 = self.clicker.find_button(self.pic_btn_dungeon_titan_water2, duration=0, threshold=0.9, use_color=True)                
+            pos2 = self.clicker.find_button(self.pic_btn_dungeon_titan_fire2, duration=0, threshold=0.9, use_color=True)
+            pos3 = self.clicker.find_button(self.pic_btn_dungeon_titan_light1, duration=0, threshold=0.9, use_color=True)
+            pos31 = self.clicker.find_button(self.pic_btn_dungeon_titan_dark1, duration=0, threshold=0.9, use_color=True)
+            pos4 = self.clicker.find_button(self.pic_btn_dungeon_titan_water3, duration=0, threshold=0.9, use_color=True)
+            pos5 = self.clicker.find_button(self.pic_btn_dungeon_titan_water4, duration=0, threshold=0.9, use_color=True)
+            bResetTitan = True
+            if(self.checkpos(pos1) and self.checkpos(pos2) and self.checkpos(pos4) and self.checkpos(pos5)):
+                if self.checkpos(pos3):
+                    bResetTitan = False
+                elif self.checkpos(pos31):
+                    bResetTitan = False
+                
+            if bResetTitan:
+                # 清空战斗泰坦
+                point = [540, 700]
+                for i in range(5):
+                    self.clicker.click_point(point[0], point[1])
+                    point[0] += 102
+
+                # 重新选择战斗泰坦
+                nSelected = 0
+                positions = self.clicker.find_button(self.pic_btn_dungeon_titan_water2, duration=0, threshold=0.9, use_color=True)
+                nSelected += 1 if self.clickpos(positions) else 0
+                    
+                positions = self.clicker.find_button(self.pic_btn_dungeon_titan_fire2, duration=0, threshold=0.9, use_color=True)
+                nSelected += 1 if self.clickpos(positions) else 0
+                    
+                positions = self.clicker.find_button(self.pic_btn_dungeon_titan_light1, duration=0, threshold=0.9, use_color=True)
+                if positions:
+                    nSelected += 1 if self.clickpos(positions) else 0
+                else:
+                    positions = self.clicker.find_button(self.pic_btn_dungeon_titan_dark1, duration=0, threshold=0.9, use_color=True)
+                    nSelected += 1 if self.clickpos(positions) else 0
+                    
+                # 往下拖动滚动条：   
+                positions = self.clicker.find_button(self.pic_btn_dungeon_scrollbar, duration=0, threshold=0.9, use_color=True)
+                if positions:
+                    pyautogui.moveTo(positions[0][1] + 2, positions[0][0] + 2, duration=0.5)  # 拖拽到目标位置
+                    pyautogui.mouseDown(button='left')  # 按下左键
+                    pyautogui.moveTo(positions[0][1] + 2, positions[0][0] + 2 + 70, duration=0.5)  # 拖拽到目标位置
+                    pyautogui.mouseUp(button='left')  # 松开左键  
+                        
+                    positions = self.clicker.find_button(self.pic_btn_dungeon_titan_water3, duration=0, threshold=0.9, use_color=True)
+                    nSelected += 1 if self.clickpos(positions) else 0
+                        
+                    positions = self.clicker.find_button(self.pic_btn_dungeon_titan_water4, duration=0, threshold=0.9, use_color=True)
+                    nSelected += 1 if self.clickpos(positions) else 0
+                        
+                # 往上拖动滚动条：   
+                positions = self.clicker.find_button(self.pic_btn_dungeon_scrollbar, duration=0, threshold=0.9, use_color=True)
+                if positions:
+                    pyautogui.moveTo(positions[0][1] + 2, positions[0][0] + 2, duration=0.5)  # 拖拽到目标位置
+                    pyautogui.mouseDown(button='left')  # 按下左键
+                    pyautogui.moveTo(positions[0][1] + 2, positions[0][0] + 2 - 70, duration=0.5)  # 拖拽到目标位置
+                    pyautogui.mouseUp(button='left')  # 松开左键  
+                        
+                titans = [self.pic_btn_dungeon_titan_nature2,
+                          self.pic_btn_dungeon_titan_water1,
+                          self.pic_btn_dungeon_titan_fire1,
+                          self.pic_btn_dungeon_titan_nature1,
+                          self.pic_btn_dungeon_titan_nature3,
+                          self.pic_btn_dungeon_titan_nature4]
+                nTitan = 0
+                while nSelected < 5 and nTitan < len(titans):
+                    positions = self.clicker.find_button(titans[nTitan], duration=0, threshold=0.9, use_color=True)
+                    clickret = self.clickpos(positions)
+                    nSelected += 1 if clickret else 0
+                    nTitan += 1 if clickret else 0
+            
         return self.on_battle_click()
     
+    def checkpos(self, positions):
+        half_screen_height = globaldef.screen_height // 4 * 3
+        if(positions and positions[0][0] > half_screen_height): # y
+            return True
+        return False
+        
     def clickpos(self, positions):
-        half_screen_height = globaldef.screen_height // 2
+        half_screen_height = globaldef.screen_height // 4 * 3
         if(positions and positions[0][0] < half_screen_height): # y
             self.clicker.click_point(positions[0][1], positions[0][0])
-        
+            return True
+        return False
+            
     def on_battle_click(self):
         globaldef.set_stop_loop(False)
         if self.clicker.click_button(self.pic_btn_dungeon_battle, threshold=0.6):

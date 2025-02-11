@@ -17,8 +17,8 @@ class AsgardButton:
     def on_button_click(self):
         globaldef.set_stop_loop(False)
         self.clicker.click_button(self.pic_btn_guild)
-        if self.clicker.click_button(self.pic_btn_asgard, duration=4, threshold=0.97):
-            if self.clicker.click_button(self.pic_btn_asgard_starprophet, threshold=0.98): # 0.97检测不到红点
+        if self.clicker.click_button(self.pic_btn_asgard, duration=4, threshold=0.9):
+            if self.clicker.click_button(self.pic_btn_asgard_starprophet, threshold=0.9): # 0.97检测不到红点
                 if self.clicker.click_button(self.pic_btn_asgard_starprophet_open, threshold=0.93):
                     self.clicker.click_button(self.pic_btn_close, duration=4)
             self.clicker.click_button(self.pic_btn_close)

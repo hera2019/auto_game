@@ -17,7 +17,7 @@ class SoulButton:
     
     def on_button_click(self):
         globaldef.set_stop_loop(False)
-        if self.clicker.click_button(self.pic_btn_soul, threshold=0.97):
+        if self.clicker.click_button(self.pic_btn_soul, threshold=0.9, use_color=True):
             if self.clicker.click_button(self.pic_btn_soul_receive, threshold=0.93):
                 if not self.clicker.click_button(self.pic_btn_soul_summon10, duration=0, threshold=0.9, double_click=True):
                     self.clicker.click_button(self.pic_btn_soul_summon1, duration=0, threshold=0.9, double_click=True)

@@ -27,10 +27,10 @@ class TitanvalleyButton:
     def on_button_click(self):
         globaldef.set_stop_loop(False)
         self.clicker.click_button(self.pic_btn_guild)
-        if self.clicker.click_button(self.pic_btn_titanvalley, duration=4, threshold=0.97):
+        if self.clicker.click_button(self.pic_btn_titanvalley, duration=4, threshold=0.9):
             
             # 泰坦Raid    
-            if self.clicker.click_button(self.pic_btn_titanvalley_elementtournament, threshold=0.95, use_color=True):
+            if self.clicker.click_button(self.pic_btn_titanvalley_elementtournament, threshold=0.8, use_color=True):
                 if self.clicker.click_button(self.pic_btn_titanvalley_tournament_raid):
                     if self.clicker.click_button(self.pic_btn_titanvalley_bulkraid):
                         self.clicker.click_button(self.pic_btn_titanvalley_showall, duration=4)

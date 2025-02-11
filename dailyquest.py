@@ -37,7 +37,7 @@ class DailyquestButton:
                         break
                     time.sleep(1)  # 可选的延迟，防止过快循环
                     
-            if self.clicker.click_button(self.pic_btn_dailyquest_guildquest, threshold=0.96): # 公会任务
+            if self.clicker.click_button(self.pic_btn_dailyquest_guildquest, threshold=0.9): # 公会任务
                 while self.clicker.find_button(self.pic_btn_guildquest_clear):
                     if globaldef.is_stopped():
                         break
