@@ -123,7 +123,7 @@ class AdventureButton:
             
         # Pet Summon
         if self.clicker.click_button(self.pic_btn_adventure_petsummon, threshold=0.9, use_color=True):
-            if self.clicker.click_button(self.pic_btn_adventure_petegg, threshold=0.9, use_color=True):
+            if self.clicker.click_button(self.pic_btn_adventure_petegg, threshold=0.8, use_color=True):
                 time.sleep(2)
                 while self.clicker.click_button(self.pic_btn_dungeon_ok):
                     time.sleep(0.5)
@@ -152,7 +152,9 @@ class AdventureButton:
 
     def on_domap_click(self):
         globaldef.set_stop_loop(False)
-        if self.clicker.click_button(self.pic_btn_adventure_bigavatar, double_click=True):
+        time.sleep(1)
+        if self.clicker.click_button(self.pic_btn_adventure_bigavatar, use_color=True, double_click=True, click_pos=4):
+            time.sleep(0.5)
             for _ in range(5): # 4
                 pyautogui.scroll(-200)  # 每次向下滚动100
                 
@@ -204,9 +206,9 @@ class AdventureButton:
         move = 100
         if direction == 1:
             move = -move
-        pyautogui.moveTo(left, up, duration=0.5)  # 拖拽到目标位置
+        pyautogui.moveTo(left, up, duration=0.5)  # 移动到目标位置
         pyautogui.mouseDown(button='left')  # 按下左键
-        pyautogui.moveTo(left, up + move, duration=0.5)  # 拖拽到目标位置
+        pyautogui.moveTo(left + 20, up + move, duration=0.5)  # 拖拽到目标位置
         pyautogui.mouseUp(button='left')  # 松开左键        
         
     def click_point(self, x, y, mode=0):

@@ -36,7 +36,9 @@ class GetrewardsButton:
         if self.clicker.click_button(self.pic_btn_hero, use_color=True):
             if self.clicker.click_button(self.pic_btn_hero_dante, use_color=True):
                 if self.clicker.click_button(self.pic_btn_hero_addpoint, use_color=True):
-                    if not self.clicker.click_button(self.pic_btn_hero_10getpoint, threshold=0.97, use_color=True, checktwice=False):
+                    if self.clicker.click_button(self.pic_btn_hero_10getpoint, threshold=0.97, use_color=True, checktwice=False):
+                        time.sleep(0.5)
+                    else:
                         self.clicker.click_button(self.pic_btn_close)
                 self.clicker.click_button(self.pic_btn_close)
             self.clicker.click_button(self.pic_btn_bigclose)
